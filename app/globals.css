@@ -1,0 +1,267 @@
+@import "tailwindcss";
+
+/* next-themes sets a `.dark` class on <html>; teach Tailwind's `dark:` to honor it.
+   Dark is the default here, so `dark:` is essentially always-on, but we keep the
+   variant available for the few light-mode overrides. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ---------------------------------------------------------------------------
+   Starry Night — dark is the default. A deep night-blue canvas, one cool blue
+   accent for the name / links / typed text, a brighter blue for the primary CTA,
+   and one green reserved strictly for the "Live" + "Available" signal.
+   Light mode is a calm off-white inverse for the toggle.
+--------------------------------------------------------------------------- */
+:root {
+  --bg: #070b18; /* deep night blue, never pure black */
+  --surface: 255 255 255; /* base for rgb()-with-alpha surfaces */
+  --surface-1: rgba(255, 255, 255, 0.02);
+  --line: rgba(255, 255, 255, 0.08);
+  --line-strong: rgba(255, 255, 255, 0.16);
+  --text: #e8eaf2;
+  --muted: rgba(232, 234, 242, 0.55);
+  --accent: #6ea8ff; /* cool blue — name, links, active nav, typed text */
+  --cta: #2563eb; /* primary button blue */
+  --signal: #5ed6a4; /* green — ONLY for Live / Available */
+  --amber: #e6b86a; /* In Dev badge */
+  --grey: rgba(232, 234, 242, 0.45); /* Deployed / Demo badge */
+
+  /* nebula glows */
+  --nebula-blue: rgba(50, 70, 140, 0.28);
+  --nebula-violet: rgba(36, 30, 80, 0.22);
+
+  /* star tone */
+  --star: #ffffff;
+  --meteor-opacity: 1;
+}
+
+/* Light mode — off-white & ink, same accents. Softer stars, meteors hidden. */
+:root:not(.dark) {
+  --bg: #fafaf8;
+  --surface-1: rgba(16, 16, 26, 0.015);
+  --line: rgba(22, 22, 26, 0.1);
+  --line-strong: rgba(22, 22, 26, 0.18);
+  --text: #16161a;
+  --muted: rgba(22, 22, 26, 0.6);
+  --accent: #2f6fe0;
+  --cta: #2563eb;
+  --signal: #1b9e6b;
+  --amber: #b9852b;
+  --grey: rgba(22, 22, 26, 0.5);
+
+  --nebula-blue: rgba(120, 150, 230, 0.1);
+  --nebula-violet: rgba(140, 120, 200, 0.08);
+
+  --star: #5b6172;
+  --meteor-opacity: 0; /* no meteors on light */
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface-1);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-text: var(--text);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-cta: var(--cta);
+  --color-signal: var(--signal);
+  --color-amber: var(--amber);
+  --color-grey: var(--grey);
+
+  --font-sans: var(--font-poppins);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    position: relative;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-poppins), ui-sans-serif, system-ui, sans-serif;
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    transition: background-color 0.4s ease, color 0.4s ease;
+    overflow-x: hidden;
+  }
+
+  /* Two faint nebula glows fixed behind everything (below the starfield z-index). */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -2;
+    pointer-events: none;
+    background:
+      radial-gradient(60rem 45rem at 85% -5%, var(--nebula-blue), transparent 60%),
+      radial-gradient(55rem 45rem at 8% 105%, var(--nebula-violet), transparent 60%);
+    transition: background 0.4s ease;
+  }
+
+  ::selection {
+    background: color-mix(in srgb, var(--accent) 26%, transparent);
+    color: var(--text);
+  }
+
+  /* Visible, on-brand keyboard focus everywhere. */
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 3px;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Breathing dot — the "Live" / "Available" signal. Scale 1 → 1.35 → 1 with an
+   opacity pulse on a slow 2.4s loop. It quietly says: real people use this, now.
+--------------------------------------------------------------------------- */
+@keyframes breathe {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+  50% {
+    transform: scale(1.35);
+    opacity: 0;
+  }
+}
+
+.dot-breathe {
+  animation: breathe 2.4s ease-in-out infinite;
+}
+
+/* ---------------------------------------------------------------------------
+   Twinkle — per-star opacity dip. Duration/delay are set inline per star so the
+   sky never blinks in sync. Transform/opacity only.
+--------------------------------------------------------------------------- */
+@keyframes twinkle {
+  0%,
+  100% {
+    opacity: var(--star-opacity, 0.6);
+  }
+  50% {
+    opacity: 0.1;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Meteor — fade in, shoot diagonally (~38°) down-left ~335px, fade out. The head
+   leads bottom-left; the ::after tail trails BEHIND it toward the top-right, like
+   a real comet. The 142° rotation makes the tail exactly anti-parallel to travel
+   (atan(207/265) ≈ 38° below horizontal → tail points 38° above horizontal, up-
+   right). The tail gradient itself lives on the element in JSX.
+--------------------------------------------------------------------------- */
+@keyframes meteor {
+  0% {
+    transform: translate3d(0, 0, 0) rotate(142deg);
+    opacity: 0;
+  }
+  8% {
+    opacity: var(--meteor-opacity);
+  }
+  70% {
+    opacity: var(--meteor-opacity);
+  }
+  100% {
+    transform: translate3d(-265px, 207px, 0) rotate(142deg);
+    opacity: 0;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Orbit — the thin ring around the hero photo rotates once every 26s, carrying
+   a single glowing dot. Premium signature detail.
+--------------------------------------------------------------------------- */
+@keyframes orbit {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-orbit {
+  animation: orbit 26s linear infinite;
+}
+
+/* Gentle bounce for the SCROLL arrow. */
+@keyframes nudge {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(6px);
+  }
+}
+
+.animate-nudge {
+  animation: nudge 1.8s ease-in-out infinite;
+}
+
+/* Blinking caret for the typing line. */
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+.animate-blink {
+  animation: blink 1s step-end infinite;
+}
+
+/* ---------------------------------------------------------------------------
+   Hover underline draw — a 1px line wipes in from the left (Emil Kowalski style).
+   Used on nav links and contact links. Triggers on hover/focus or parent .group.
+--------------------------------------------------------------------------- */
+.u-draw {
+  position: relative;
+}
+
+.u-draw::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  height: 1px;
+  width: 100%;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.u-draw:hover::after,
+.group:hover .u-draw::after,
+.u-draw:focus-visible::after {
+  transform: scaleX(1);
+}
+
+/* Respect reduced motion everywhere. */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .dot-breathe,
+  .animate-orbit,
+  .animate-nudge,
+  .animate-blink {
+    animation: none;
+  }
+  .u-draw::after {
+    transition: none;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
