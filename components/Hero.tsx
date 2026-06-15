@@ -24,8 +24,12 @@ export function Hero() {
       className="relative mx-auto max-w-6xl px-6 pb-16 pt-32 sm:px-8 sm:pt-40 lg:pb-24"
     >
       <div className="grid items-center gap-12 lg:grid-cols-[1.15fr_0.85fr] lg:gap-8">
-        {/* Left — the pitch. */}
-        <motion.div {...container} transition={{ delayChildren: 0.15 }}>
+        {/* Left — the pitch. (Stacks below the portrait on mobile/tablet.) */}
+        <motion.div
+          {...container}
+          transition={{ delayChildren: 0.15 }}
+          className="order-2 lg:order-1"
+        >
           <motion.p
             {...item}
             className="mb-5 text-sm font-light tracking-wide text-accent"
@@ -64,17 +68,17 @@ export function Hero() {
 
           <motion.div
             {...item}
-            className="mt-9 flex flex-wrap items-center gap-3"
+            className="mt-9 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center"
           >
             <a
               href="#projects"
-              className="rounded-full bg-cta px-6 py-3 text-sm font-medium text-white shadow-[0_8px_30px_-12px_rgba(37,99,235,0.8)] transition-transform hover:-translate-y-0.5"
+              className="rounded-full bg-cta px-6 py-3 text-center text-sm font-medium text-white shadow-[0_8px_30px_-12px_rgba(37,99,235,0.8)] transition-transform hover:-translate-y-0.5 sm:w-auto"
             >
               View My Work
             </a>
             <a
               href="/cv.pdf"
-              className="inline-flex items-center gap-2 rounded-full border border-line-strong px-6 py-3 text-sm font-light text-text transition-colors hover:border-accent hover:text-accent"
+              className="inline-flex items-center justify-center gap-2 rounded-full border border-line-strong px-6 py-3 text-sm font-light text-text transition-colors hover:border-accent hover:text-accent sm:w-auto"
             >
               <Download size={16} />
               Download CV
@@ -98,7 +102,7 @@ export function Hero() {
           initial={reduceMotion ? false : { opacity: 0, scale: 0.96 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ ...spring, delay: 0.25 }}
-          className="relative mx-auto aspect-square w-[clamp(15rem,70vw,22rem)]"
+          className="order-1 relative mx-auto aspect-square w-[clamp(11rem,52vw,22rem)] lg:order-2"
         >
           {/* Orbital ring + riding dot. */}
           <div className="animate-orbit absolute inset-0 rounded-full border border-line-strong">
@@ -111,7 +115,7 @@ export function Hero() {
               src="/photo.JPG"
               alt="Sebastian Augustino Lie"
               fill
-              sizes="(max-width: 1024px) 70vw, 22rem"
+              sizes="(max-width: 1024px) 52vw, 22rem"
               className="object-cover"
               priority
             />
@@ -125,7 +129,7 @@ export function Hero() {
         initial={reduceMotion ? false : { opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1 }}
-        className="mt-16 flex flex-col items-center gap-2 text-[11px] font-light tracking-[0.2em] text-muted transition-colors hover:text-text"
+        className="mt-16 hidden flex-col items-center gap-2 text-[11px] font-light tracking-[0.2em] text-muted transition-colors hover:text-text sm:flex"
         aria-label="Scroll to content"
       >
         SCROLL

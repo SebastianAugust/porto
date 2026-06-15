@@ -28,6 +28,9 @@ export function Starfield() {
   const allStars = useMemo(() => makeStars(110), []);
   const stars = isMobile ? allStars.slice(0, 55) : allStars;
 
+  // One meteor on mobile (perf), the full staggered set on larger screens.
+  const meteors = isMobile ? meteorConfigs.slice(0, 1) : meteorConfigs;
+
   return (
     <div
       aria-hidden
@@ -57,7 +60,7 @@ export function Starfield() {
       ))}
 
       {!reduceMotion &&
-        meteorConfigs.map((m, i) => (
+        meteors.map((m, i) => (
           <span
             key={`meteor-${i}`}
             className="absolute h-[2px] w-[2px] rounded-full bg-white

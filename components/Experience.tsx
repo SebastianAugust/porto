@@ -37,7 +37,7 @@ function EntryRow({ entry, Icon }: { entry: Entry; Icon: typeof Briefcase }) {
       variants={reduceMotion ? undefined : fadeUp}
       className="flex gap-4 border-t border-line py-6 first:border-t-0 sm:gap-5"
     >
-      <div className="grid h-11 w-11 shrink-0 place-items-center rounded-xl border border-line bg-surface text-accent">
+      <div className="grid h-9 w-9 shrink-0 place-items-center rounded-xl border border-line bg-surface text-accent sm:h-11 sm:w-11">
         <Icon size={18} />
       </div>
       <div className="min-w-0">

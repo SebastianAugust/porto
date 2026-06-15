@@ -21,7 +21,7 @@ export function Footer() {
           </p>
         </div>
 
-        <div className="flex items-center gap-5">
+        <div className="-ml-2.5 flex items-center gap-1 sm:ml-0 sm:gap-5">
           {socials.map(({ label, href, Icon }) => (
             <a
               key={label}
@@ -29,7 +29,7 @@ export function Footer() {
               target={href.startsWith("http") ? "_blank" : undefined}
               rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
               aria-label={label}
-              className="text-muted transition-colors hover:text-text"
+              className="grid h-11 w-11 place-items-center rounded-full text-muted transition-colors hover:text-text sm:h-auto sm:w-auto"
             >
               <Icon size={16} />
             </a>

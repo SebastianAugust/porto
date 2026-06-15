@@ -67,7 +67,7 @@ export function Contact() {
                 {...(link.external
                   ? { target: "_blank", rel: "noopener noreferrer" }
                   : {})}
-                className="u-draw w-fit text-[15px] font-light text-text transition-colors hover:text-accent"
+                className="u-draw inline-flex min-h-11 w-fit items-center text-[15px] font-light text-text transition-colors hover:text-accent sm:min-h-0"
               >
                 {link.value}
               </a>
