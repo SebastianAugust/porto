@@ -18,7 +18,7 @@
   --line: rgba(255, 255, 255, 0.08);
   --line-strong: rgba(255, 255, 255, 0.16);
   --text: #e8eaf2;
-  --muted: rgba(232, 234, 242, 0.55);
+  --muted: rgba(232, 234, 242, 0.62); /* ≥4.5:1 on --bg (WCAG AA) */
   --accent: #6ea8ff; /* cool blue — name, links, active nav, typed text */
   --cta: #2563eb; /* primary button blue */
   --signal: #5ed6a4; /* green — ONLY for Live / Available */
@@ -76,6 +76,12 @@
     scroll-behavior: smooth;
   }
 
+  /* Keep section headings clear of the 4rem sticky navbar when anchor-scrolled. */
+  section[id],
+  [data-scroll-target] {
+    scroll-margin-top: 5rem;
+  }
+
   body {
     position: relative;
     background: var(--bg);
@@ -112,6 +118,23 @@
     outline-offset: 3px;
     border-radius: 3px;
   }
+}
+
+/* ---------------------------------------------------------------------------
+   Initial load — the starfield fades up first, before the content orchestrates
+   in. Ends at opacity 1, so when animations are disabled the sky is simply on.
+--------------------------------------------------------------------------- */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.8s ease-out both;
 }
 
 /* ---------------------------------------------------------------------------
@@ -239,7 +262,8 @@
 
 .u-draw:hover::after,
 .group:hover .u-draw::after,
-.u-draw:focus-visible::after {
+.u-draw:focus-visible::after,
+.u-draw.is-active::after {
   transform: scaleX(1);
 }
 

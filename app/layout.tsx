@@ -5,6 +5,9 @@ import { Providers } from "./providers";
 import { Starfield } from "@/components/Starfield";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
+import { site } from "@/lib/site";
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 // One family, played across weights. 300/400 for body, 600/700 for headings.
 const poppins = Poppins({
@@ -15,10 +18,44 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "Sebastian August — Fullstack Developer",
-  description:
-    "Informatics Engineering student at Universitas Padjadjaran who ships real products — from kasir systems for warung makan to AI-powered solar monitoring.",
-  authors: [{ name: "Sebastian August" }],
+  // metadataBase resolves all relative URLs (OG/twitter images, canonicals).
+  // TODO: this points at the placeholder domain in lib/site.ts — update it once
+  // the real domain is live.
+  metadataBase: new URL(site.url),
+  title: {
+    // Home page uses `default`; sub-pages flow through `template`
+    // → e.g. "Lawang Sewu POS — Sebastian August".
+    default: site.title,
+    template: `%s — ${site.name}`,
+  },
+  description: site.description,
+  keywords: [
+    "fullstack developer",
+    "React",
+    "Laravel",
+    "Next.js",
+    "Bandung",
+    "Universitas Padjadjaran",
+  ],
+  authors: [{ name: site.name, url: site.url }],
+  creator: site.name,
+  alternates: { canonical: "/" },
+  openGraph: {
+    type: "website",
+    title: site.title,
+    description: site.description,
+    url: site.url,
+    siteName: site.name,
+    locale: "en_US",
+    // Image is supplied by app/opengraph-image.tsx (file-based convention),
+    // which applies to every route unless a child overrides it.
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: site.title,
+    description: site.description,
+    // twitter:image falls back to the opengraph-image when no twitter-image exists.
+  },
 };
 
 export const viewport: Viewport = {
@@ -26,6 +63,22 @@ export const viewport: Viewport = {
     { media: "(prefers-color-scheme: light)", color: "#fafaf8" },
     { media: "(prefers-color-scheme: dark)", color: "#070b18" },
   ],
+};
+
+// Structured data so Google (and AI crawlers) understand who this site is about.
+const personJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: site.name,
+  url: site.url,
+  jobTitle: "Fullstack Developer",
+  description: site.description,
+  sameAs: [site.github, site.linkedin],
+  alumniOf: {
+    "@type": "CollegeOrUniversity",
+    name: site.university,
+  },
+  knowsAbout: ["React", "Laravel", "Next.js", "Machine Learning", "TypeScript"],
 };
 
 export default function RootLayout({
@@ -40,12 +93,22 @@ export default function RootLayout({
       className={`${poppins.variable} h-full antialiased`}
     >
       <body className="min-h-full bg-bg text-text">
+        {/* JSON-LD Person schema. The `<` → `<` scrub guards against XSS. */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(personJsonLd).replace(/</g, "\\u003c"),
+          }}
+        />
         <Providers>
           <Starfield />
           <Navbar />
           {children}
           <Footer />
         </Providers>
+        {/* Zero-layout analytics — render nothing visible, sit outside Providers. */}
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );

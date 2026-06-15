@@ -16,7 +16,7 @@ export function Footer() {
           <p className="text-xs font-light text-muted">
             © 2025 Sebastian August
           </p>
-          <p className="mt-1 text-[11px] font-light text-muted/70">
+          <p className="mt-1 text-[11px] font-light text-muted">
             Built with Next.js
           </p>
         </div>
@@ -29,7 +29,7 @@ export function Footer() {
               target={href.startsWith("http") ? "_blank" : undefined}
               rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
               aria-label={label}
-              className="grid h-11 w-11 place-items-center rounded-full text-muted transition-colors hover:text-text sm:h-auto sm:w-auto"
+              className="grid h-11 w-11 place-items-center rounded-full text-muted transition-colors duration-200 hover:text-accent sm:h-auto sm:w-auto"
             >
               <Icon size={16} />
             </a>
