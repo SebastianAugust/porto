@@ -13,8 +13,8 @@ interface Achievement {
 
 // Placeholders — edit data/achievements here as real ones land.
 const achievements: Achievement[] = [
-  { title: "Add your achievement here", issuer: "Issuer", year: "Year" },
-  { title: "Add your achievement here", issuer: "Issuer", year: "Year" },
+  { title: "Awardee of Bakti BCA Scholarship", issuer: "Bank Central Asia (BCA)", year: "2026" },
+  
 ];
 
 export function Achievements() {

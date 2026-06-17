@@ -14,7 +14,7 @@ export function Footer() {
       <div className="flex flex-col items-start justify-between gap-4 border-t border-line pt-8 sm:flex-row sm:items-center">
         <div>
           <p className="text-xs font-light text-muted">
-            © 2025 Sebastian August
+            © 2025 Sebastian Augustino Lie
           </p>
           <p className="mt-1 text-[11px] font-light text-muted">
             Built with Next.js

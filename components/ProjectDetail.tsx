@@ -67,7 +67,7 @@ function ImagePlaceholder({
   return (
     <div
       className={
-        "relative grid place-items-center overflow-hidden rounded-2xl border border-line bg-gradient-to-br from-[#101830] to-[#0a0f20] " +
+        "relative grid place-items-center overflow-hidden rounded-2xl border border-line bg-[image:var(--cover-grad)] " +
         (className ?? "")
       }
     >
@@ -124,6 +124,9 @@ export function ProjectDetail({
         <p className="mt-3 text-base font-light text-muted sm:text-lg">
           {project.tagline}
         </p>
+        <p className="mt-2 text-sm font-light text-muted/80">
+          {project.role} · {project.context}
+        </p>
       </motion.header>
 
       {/* 3 — Hero image */}
@@ -177,11 +180,17 @@ export function ProjectDetail({
 
       {/* 7 — Hard Problem I Solved (extra visual weight) */}
       <Reveal className="mt-12">
-        <div className="relative overflow-hidden rounded-2xl border border-accent/30 bg-accent/[0.04] p-6 shadow-[0_0_50px_-22px_rgba(110,168,255,0.7)] sm:p-8">
+        <div className="surface-card relative overflow-hidden rounded-2xl border border-accent/30 bg-accent/[0.04] p-6 shadow-[var(--shadow-panel)] sm:p-8">
           <div className="pointer-events-none absolute -right-16 -top-16 h-40 w-40 rounded-full bg-accent/10 blur-3xl" />
           <Label>Hard Problem I Solved</Label>
           <Body text={project.hardProblem} />
         </div>
+      </Reveal>
+
+      {/* 7.5 — What I Learned */}
+      <Reveal className="mt-12">
+        <Label>What I Learned</Label>
+        <Body text={project.learned} />
       </Reveal>
 
       {/* 8 — Stats row */}
@@ -248,7 +257,7 @@ export function ProjectDetail({
                 href={project.liveUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 rounded-full bg-cta px-6 py-3 text-sm font-medium text-white shadow-[0_8px_30px_-12px_rgba(37,99,235,0.8)] transition-transform hover:-translate-y-0.5"
+                className="inline-flex items-center gap-1.5 rounded-full bg-cta px-6 py-3 text-sm font-medium text-white shadow-[var(--shadow-cta)] transition-transform hover:-translate-y-0.5"
               >
                 Visit Live Site <ArrowUpRight size={16} />
               </a>

@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useReducedMotion } from "framer-motion";
 
-const PHRASES = ["POS systems", "AI monitoring tools", "web apps", "things that ship"];
+const PHRASES = ["checkout systems", "AI monitoring tools", "web apps", "whatever needs solving"];
 
 const TYPE_MS = 70;
 const DELETE_MS = 38;
@@ -47,7 +47,7 @@ export function TypingText() {
   }, [text, deleting, index, reduceMotion]);
 
   if (reduceMotion) {
-    return <span className="text-accent">things that ship</span>;
+    return <span className="text-accent">whatever needs solving</span>;
   }
 
   return (

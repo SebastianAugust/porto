@@ -11,7 +11,6 @@ import { ThemeToggle } from "@/components/ThemeToggle";
 import { GithubIcon, LinkedinIcon, InstagramIcon } from "@/components/icons";
 
 const links = [
-  { label: "Home", href: "#home" },
   { label: "About", href: "#about" },
   { label: "Projects", href: "#projects" },
   { label: "Experience", href: "#experience" },

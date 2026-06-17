@@ -7,9 +7,9 @@
  * from this one value.
  */
 export const site = {
-  name: "Sebastian August",
-  // Used in the title template: "<page> — Sebastian August".
-  title: "Sebastian August — Fullstack Developer",
+  name: "Sebastian Augustino Lie",
+  // Used in the title template: "<page> — Sebastian Augustino Lie".
+  title: "Sebastian Augustino Lie — Fullstack Developer",
   description:
     "Informatics Engineering student at Universitas Padjadjaran who ships real products — from POS systems for warung makan to AI-powered solar monitoring.",
   // TODO: update to the real domain (no trailing slash). Placeholder for now.

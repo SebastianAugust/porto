@@ -21,10 +21,15 @@ const links: ContactLink[] = [
   },
   {
     label: "Email",
-    value: "placeholder@email.com",
-    href: "mailto:placeholder@email.com",
+    value: "sebastianagustinolie@gmail.com",
+    href: "mailto:sebastianagustinolie@gmail.com",
   },
-  { label: "LinkedIn", value: "placeholder", href: "#", external: true },
+  {
+    label: "LinkedIn",
+    value: "Sebastian Augustino Lie",
+    href: "www.linkedin.com/in/sebastianaugust",
+    external: true,
+  },
   { label: "Location", value: "Bandung, West Java" },
 ];
 
@@ -83,13 +88,16 @@ export function Contact() {
     } catch (err) {
       setStatus("error");
       setError(
-        err instanceof Error ? err.message : "Something went wrong, try again."
+        err instanceof Error ? err.message : "Something went wrong, try again.",
       );
     }
   };
 
   return (
-    <section id="contact" className="mx-auto max-w-3xl px-6 py-20 sm:px-8 sm:py-28">
+    <section
+      id="contact"
+      className="mx-auto max-w-3xl px-6 py-20 sm:px-8 sm:py-28"
+    >
       <motion.h2
         variants={reduceMotion ? undefined : fadeUp}
         initial={reduceMotion ? false : "hidden"}
@@ -127,7 +135,9 @@ export function Contact() {
                 {link.value}
               </a>
             ) : (
-              <span className="text-[15px] font-light text-text">{link.value}</span>
+              <span className="text-[15px] font-light text-text">
+                {link.value}
+              </span>
             )}
           </motion.li>
         ))}
@@ -196,7 +206,10 @@ export function Contact() {
           </div>
 
           {/* Honeypot — visually hidden, off the tab order, ignored by humans. */}
-          <div aria-hidden className="absolute left-[-9999px] h-0 w-0 overflow-hidden">
+          <div
+            aria-hidden
+            className="absolute left-[-9999px] h-0 w-0 overflow-hidden"
+          >
             <label htmlFor="contact-company">Company (leave this empty)</label>
             <input
               id="contact-company"
@@ -213,7 +226,7 @@ export function Contact() {
               type="button"
               onClick={submit}
               disabled={status === "sending"}
-              className="inline-flex min-w-[10rem] items-center justify-center gap-2 rounded-full bg-cta px-6 py-3 text-sm font-medium text-white shadow-[0_8px_30px_-12px_rgba(37,99,235,0.8)] transition-all duration-200 hover:-translate-y-0.5 disabled:translate-y-0 disabled:opacity-70"
+              className="inline-flex min-w-[10rem] items-center justify-center gap-2 rounded-full bg-cta px-6 py-3 text-sm font-medium text-white shadow-[var(--shadow-cta)] transition-all duration-200 hover:-translate-y-0.5 disabled:translate-y-0 disabled:opacity-70"
             >
               {status === "sending" ? (
                 <>

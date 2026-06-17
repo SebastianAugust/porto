@@ -34,7 +34,7 @@ export function Hero() {
             {...item}
             className="mb-5 text-sm font-light tracking-wide text-accent"
           >
-            Hello World, I&apos;m 👋
+            Hello World, I&apos;m
           </motion.p>
 
           <motion.h1
@@ -61,9 +61,10 @@ export function Hero() {
             id="about"
             className="mt-6 max-w-xl scroll-mt-28 text-pretty text-[15px] font-light leading-relaxed text-muted"
           >
-            Informatics Engineering student at Universitas Padjadjaran who ships
-            real products — from kasir systems for warung makan to AI-powered
-            solar monitoring.
+            Informatics Engineering student at Padjadjaran University with hands-on experience building
+            software solutions and leading student organizations, including
+            developing a real-world POS system and an ML-based solar power plant
+            monitoring platform
           </motion.p>
 
           <motion.div
@@ -72,13 +73,13 @@ export function Hero() {
           >
             <a
               href="#projects"
-              className="rounded-full bg-cta px-6 py-3 text-center text-sm font-medium text-white shadow-[0_8px_30px_-12px_rgba(37,99,235,0.8)] transition-transform hover:-translate-y-0.5 sm:w-auto"
+              className="rounded-full bg-cta px-6 py-3 text-center text-sm font-medium text-white shadow-[var(--shadow-cta)] transition-transform hover:-translate-y-0.5 sm:w-auto"
             >
               View My Work
             </a>
             <a
-              href="/cv/sebastian-august-cv.pdf"
-              download="sebastian-august-cv.pdf"
+              href="/cv/Sebastian-Augustino-Lie-CV.pdf"
+              download="Sebastian-Augustino-Lie-CV.pdf"
               className="inline-flex items-center justify-center gap-2 rounded-full border border-line-strong px-6 py-3 text-sm font-light text-text transition-colors hover:border-accent hover:text-accent sm:w-auto"
             >
               <Download size={16} />
@@ -111,7 +112,7 @@ export function Hero() {
           </div>
 
           {/* Portrait inside the ring. */}
-          <div className="absolute inset-[7%] overflow-hidden rounded-full border border-line bg-surface shadow-[inset_0_2px_40px_rgba(0,0,0,0.5),0_0_60px_-12px_rgba(110,168,255,0.5)]">
+          <div className="absolute inset-[7%] overflow-hidden rounded-full border border-line bg-surface shadow-[var(--shadow-photo)]">
             <Image
               src="/photo.JPG"
               alt="Sebastian Augustino Lie"

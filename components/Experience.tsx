@@ -2,25 +2,27 @@
 
 import { useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { Briefcase, GraduationCap } from "lucide-react";
-import { work, education } from "@/data/experience";
+import { type LucideIcon } from "lucide-react";
+import { organizations, education } from "@/data/experience";
 import { cn, fadeUp, stagger, inView, spring } from "@/lib/utils";
 import { SectionHeading } from "@/components/Section";
 
-type Tab = "work" | "education";
+type Tab = "organizations" | "education";
 
 interface Entry {
   period: string;
   title: string;
   org: string;
   bullets: string[];
+  Icon: LucideIcon;
 }
 
-const workEntries: Entry[] = work.map((w) => ({
-  period: w.period,
-  title: w.role,
-  org: w.org,
-  bullets: w.bullets,
+const orgEntries: Entry[] = organizations.map((o) => ({
+  period: o.period,
+  title: o.role,
+  org: o.org,
+  bullets: o.bullets,
+  Icon: o.icon,
 }));
 
 const eduEntries: Entry[] = education.map((e) => ({
@@ -28,10 +30,12 @@ const eduEntries: Entry[] = education.map((e) => ({
   title: e.degree,
   org: e.org,
   bullets: e.bullets,
+  Icon: e.icon,
 }));
 
-function EntryRow({ entry, Icon }: { entry: Entry; Icon: typeof Briefcase }) {
+function EntryRow({ entry }: { entry: Entry }) {
   const reduceMotion = useReducedMotion();
+  const { Icon } = entry;
   return (
     <motion.div
       variants={reduceMotion ? undefined : fadeUp}
@@ -61,11 +65,10 @@ function EntryRow({ entry, Icon }: { entry: Entry; Icon: typeof Briefcase }) {
 }
 
 export function Experience() {
-  const [tab, setTab] = useState<Tab>("work");
+  const [tab, setTab] = useState<Tab>("organizations");
   const reduceMotion = useReducedMotion();
 
-  const entries = tab === "work" ? workEntries : eduEntries;
-  const Icon = tab === "work" ? Briefcase : GraduationCap;
+  const entries = tab === "organizations" ? orgEntries : eduEntries;
 
   return (
     <section
@@ -76,7 +79,7 @@ export function Experience() {
 
       {/* Pill toggle. */}
       <div className="mb-8 inline-flex rounded-full border border-line bg-surface p-1">
-        {(["work", "education"] as const).map((t) => (
+        {(["organizations", "education"] as const).map((t) => (
           <button
             key={t}
             type="button"
@@ -109,7 +112,7 @@ export function Experience() {
           viewport={inView}
         >
           {entries.map((entry) => (
-            <EntryRow key={`${entry.title}-${entry.org}`} entry={entry} Icon={Icon} />
+            <EntryRow key={`${entry.title}-${entry.org}`} entry={entry} />
           ))}
         </motion.div>
       </AnimatePresence>

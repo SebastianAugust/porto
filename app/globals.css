@@ -21,7 +21,8 @@
   --muted: rgba(232, 234, 242, 0.62); /* ≥4.5:1 on --bg (WCAG AA) */
   --accent: #6ea8ff; /* cool blue — name, links, active nav, typed text */
   --cta: #2563eb; /* primary button blue */
-  --signal: #5ed6a4; /* green — ONLY for Live / Available */
+  --signal: #5ed6a4; /* green — ONLY for Live / Available dot */
+  --signal-text: #5ed6a4; /* "Live" label text */
   --amber: #e6b86a; /* In Dev badge */
   --grey: rgba(232, 234, 242, 0.45); /* Deployed / Demo badge */
 
@@ -32,27 +33,63 @@
   /* star tone */
   --star: #ffffff;
   --meteor-opacity: 1;
+
+  /* Per-theme surfaces / depth — dark keeps glow, light (below) uses soft shadow.
+     Centralized here so components reference one var and never hardcode a theme. */
+  --card-bg: rgba(255, 255, 255, 0.02);
+  --card-border: rgba(255, 255, 255, 0.08);
+  --shadow-card: none;
+  --shadow-card-featured: 0 0 40px -16px rgba(110, 168, 255, 0.6);
+  --shadow-cta: 0 8px 30px -12px rgba(37, 99, 235, 0.8);
+  --shadow-photo: inset 0 2px 40px rgba(0, 0, 0, 0.5),
+    0 0 60px -12px rgba(110, 168, 255, 0.5);
+  --shadow-panel: 0 0 50px -22px rgba(110, 168, 255, 0.7);
+  --cover-grad: linear-gradient(to bottom right, #101830, #0a0f20);
 }
 
-/* Light mode — off-white & ink, same accents. Softer stars, meteors hidden. */
+/* ---------------------------------------------------------------------------
+   Dawn — the daytime counterpart to the starry night. A warm, layered early-
+   morning sky: off-white canvas (never pure white), a soft rising sun, slow
+   clouds, and faint blue accent dots that quietly echo the night's stars.
+   Depth here comes from soft COLORED shadows, not glow.
+--------------------------------------------------------------------------- */
 :root:not(.dark) {
-  --bg: #fafaf8;
-  --surface-1: rgba(16, 16, 26, 0.015);
-  --line: rgba(22, 22, 26, 0.1);
-  --line-strong: rgba(22, 22, 26, 0.18);
-  --text: #16161a;
-  --muted: rgba(22, 22, 26, 0.6);
-  --accent: #2f6fe0;
+  --bg: #faf8f4; /* warm off-white base, never #ffffff */
+  --surface-1: rgba(35, 35, 43, 0.02);
+  --line: rgba(42, 42, 51, 0.1);
+  --line-strong: rgba(42, 42, 51, 0.16);
+  --text: #23232b;
+  --muted: rgba(42, 42, 51, 0.72); /* ≥4.5:1 on Dawn bg (spec 0.6 fails AA) */
+  --accent: #3566c9; /* deeper than dark #6ea8ff for AA on light bg */
   --cta: #2563eb;
-  --signal: #1b9e6b;
-  --amber: #b9852b;
-  --grey: rgba(22, 22, 26, 0.5);
+  --signal: #2bbd83; /* vivid green — the Live / Available dot */
+  --signal-text: #0c6f47; /* darker green for "Live" label text (5.66:1 AA) */
+  --amber: #8a5512; /* In Dev badge — deepened for AA (5.65:1) on warm bg */
+  --grey: rgba(42, 42, 51, 0.72); /* Deployed / Demo badge (≥4.5:1) */
 
-  --nebula-blue: rgba(120, 150, 230, 0.1);
-  --nebula-violet: rgba(140, 120, 200, 0.08);
+  /* Dawn radial glows (consumed by body::before) */
+  --nebula-blue: rgba(231, 236, 251, 1); /* pale blue, bottom-left */
+  --nebula-violet: rgba(255, 233, 214, 1); /* peach, top-right */
 
-  --star: #5b6172;
-  --meteor-opacity: 0; /* no meteors on light */
+  --star: #5b6172; /* unused in light (star-sky fades out) */
+  --meteor-opacity: 0;
+
+  /* Dawn surfaces — frosted glass + soft blue-tinted shadows */
+  --card-bg: rgba(255, 255, 255, 0.75);
+  --card-border: rgba(255, 255, 255, 0.9);
+  --shadow-card: 0 12px 30px -14px rgba(80, 100, 160, 0.3);
+  --shadow-card-featured: 0 16px 40px -16px rgba(80, 100, 160, 0.4);
+  --shadow-cta: 0 8px 20px -6px rgba(37, 99, 235, 0.5);
+  --shadow-photo: 0 20px 50px -12px rgba(110, 140, 220, 0.4);
+  --shadow-panel: 0 14px 36px -18px rgba(80, 100, 160, 0.35);
+  --cover-grad: linear-gradient(to bottom right, #eef1fb, #fbf3ec);
+
+  /* Dawn scenery (consumed by Starfield's dawn-sky) */
+  --sun-core: #fff6e8;
+  --sun-edge: #ffd9a8;
+  --sun-halo: rgba(255, 206, 150, 0.45);
+  --cloud: #ffffff;
+  --dot: #6ea8ff; /* star callback — faint static blue dots */
 }
 
 @theme inline {
@@ -105,6 +142,19 @@
       radial-gradient(60rem 45rem at 85% -5%, var(--nebula-blue), transparent 60%),
       radial-gradient(55rem 45rem at 8% 105%, var(--nebula-violet), transparent 60%);
     transition: background 0.4s ease;
+  }
+
+  /* Dawn background — warm off-white base gradient + two soft radial glows.
+     Light only; dark keeps its solid night bg + nebula above. */
+  :root:not(.dark) body {
+    background-image: linear-gradient(180deg, #fbf3ec 0%, #faf8f4 60%);
+    background-attachment: fixed;
+  }
+
+  :root:not(.dark) body::before {
+    background:
+      radial-gradient(ellipse 90% 60% at 75% 0%, var(--nebula-violet), transparent 55%),
+      radial-gradient(ellipse 70% 50% at 15% 5%, var(--nebula-blue), transparent 50%);
   }
 
   ::selection {
@@ -265,6 +315,76 @@
 .u-draw:focus-visible::after,
 .u-draw.is-active::after {
   transform: scaleX(1);
+}
+
+/* ---------------------------------------------------------------------------
+   Dawn ⇄ Night crossfade. Both scenery layers render at once; the active theme's
+   layer fades to opacity 1 over 0.5s while the other fades out — night turning to
+   morning, never a hard flip. Driven purely by the `.dark` class next-themes sets
+   before paint, so there's no hydration flash and no JS needed for visibility.
+--------------------------------------------------------------------------- */
+.star-sky,
+.dawn-sky {
+  position: absolute;
+  inset: 0;
+  transition: opacity 0.5s ease;
+}
+.star-sky {
+  opacity: 1;
+}
+.dawn-sky {
+  opacity: 0;
+}
+:root:not(.dark) .star-sky {
+  opacity: 0;
+}
+:root:not(.dark) .dawn-sky {
+  opacity: 1;
+}
+
+/* The sun rises on dark→light (fade + upward drift) and sets on the reverse. */
+.dawn-sun {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.6s ease, transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+:root:not(.dark) .dawn-sun {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Thin, soft clouds — blurred rounded bars. Drift distance/duration set inline. */
+.dawn-cloud {
+  border-radius: 9999px;
+  background: var(--cloud);
+  filter: blur(14px);
+}
+
+@keyframes cloud-drift-r {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(34px);
+  }
+}
+
+@keyframes cloud-drift-l {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(-34px);
+  }
+}
+
+/* Frosted glass for cards — LIGHT ONLY. In dark this would blur the starfield
+   behind cards, which would change the night theme; so it's scoped to Dawn. */
+:root:not(.dark) .surface-card {
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
 }
 
 /* Respect reduced motion everywhere. */

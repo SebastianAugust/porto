@@ -13,7 +13,7 @@ export function generateStaticParams() {
   return projects.map((project) => ({ slug: project.slug }));
 }
 
-/** Per-page SEO. Title flows through the root template → "Name — Sebastian August". */
+/** Per-page SEO. Title flows through the root template → "Name — Sebastian Augustino Lie". */
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const project = getProject(slug);

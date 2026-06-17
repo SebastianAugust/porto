@@ -5,6 +5,7 @@ import { Providers } from "./providers";
 import { Starfield } from "@/components/Starfield";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
+import ScrollReset from "@/components/ScrollReset";
 import { site } from "@/lib/site";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
@@ -24,7 +25,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: {
     // Home page uses `default`; sub-pages flow through `template`
-    // → e.g. "Lawang Sewu POS — Sebastian August".
+    // → e.g. "Lawang Sewu POS — Sebastian Augustino Lie".
     default: site.title,
     template: `%s — ${site.name}`,
   },
@@ -60,7 +61,7 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#fafaf8" },
+    { media: "(prefers-color-scheme: light)", color: "#fbf3ec" },
     { media: "(prefers-color-scheme: dark)", color: "#070b18" },
   ],
 };
@@ -101,6 +102,7 @@ export default function RootLayout({
           }}
         />
         <Providers>
+          <ScrollReset />
           <Starfield />
           <Navbar />
           {children}

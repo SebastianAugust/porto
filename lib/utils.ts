@@ -110,3 +110,25 @@ export function makeStars(count: number, seed = 1337): Star[] {
 
   return stars;
 }
+
+export interface Dot {
+  x: number; // %
+  y: number; // %
+  size: number; // px
+  opacity: number;
+}
+
+/**
+ * Dawn accent dots — a quiet daytime callback to the night's stars. Faint, static
+ * light-blue specks scattered across the upper sky. Generated from a fixed seed so
+ * SSR and client serialize identically (no hydration mismatch). They never move.
+ */
+export function makeDots(count: number, seed = 7): Dot[] {
+  const rand = mulberry32(seed);
+  return Array.from({ length: count }, () => ({
+    x: r(rand() * 100),
+    y: r(rand() * 48), // upper ~half of the viewport only
+    size: r(1.2 + rand() * 1.8, 2), // 1.2 – 3px
+    opacity: r(0.15 + rand() * 0.25, 2), // 0.15 – 0.4
+  }));
+}

@@ -17,10 +17,10 @@ function Card({ project }: { project: Project }) {
       whileHover={reduceMotion ? undefined : { y: -3 }}
       transition={spring}
       className={cn(
-        "group relative flex flex-col overflow-hidden rounded-2xl border bg-surface transition-colors",
+        "surface-card group relative flex flex-col overflow-hidden rounded-2xl border bg-[var(--card-bg)] transition-colors",
         project.featured
-          ? "border-accent/40 shadow-[0_0_40px_-16px_rgba(110,168,255,0.6)] hover:border-accent/70"
-          : "border-line hover:border-line-strong"
+          ? "border-accent/40 shadow-[var(--shadow-card-featured)] hover:border-accent/70"
+          : "border-[var(--card-border)] shadow-[var(--shadow-card)] hover:border-line-strong"
       )}
     >
       {/* The whole card links to the case study. The stretched-link pattern: an
@@ -34,7 +34,7 @@ function Card({ project }: { project: Project }) {
 
       {/* Cover — gradient placeholder; first image in project.images becomes the
           real screenshot later. */}
-      <div className="relative aspect-[16/9] overflow-hidden border-b border-line bg-gradient-to-br from-[#101830] to-[#0a0f20]">
+      <div className="relative aspect-[16/9] overflow-hidden border-b border-line bg-[image:var(--cover-grad)]">
         <div className="absolute inset-0 grid place-items-center text-xs font-light tracking-wide text-muted">
           screenshot
         </div>
