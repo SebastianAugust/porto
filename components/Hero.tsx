@@ -78,8 +78,8 @@ export function Hero() {
               View My Work
             </a>
             <a
-              href="/cv/Sebastian-Augustino-Lie-CV.pdf"
-              download="Sebastian-Augustino-Lie-CV.pdf"
+              href="/cv/Sebastian Augustino Lie_CV.pdf"
+              download="Sebastian Augustino Lie_CV.pdf"
               className="inline-flex items-center justify-center gap-2 rounded-full border border-line-strong px-6 py-3 text-sm font-light text-text transition-colors hover:border-accent hover:text-accent sm:w-auto"
             >
               <Download size={16} />

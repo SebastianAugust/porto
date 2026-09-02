@@ -23,7 +23,7 @@ Generated scan of the codebase for anything left incomplete. **Nothing here has 
   - `gor-badminton` — `data/projects.ts:136`
   - `orbit-ecommerce` — `data/projects.ts:162`
   - `healthcare-diagnosis` — `data/projects.ts:189`
-- **Verify (already present, not missing):** profile photo `public/photo.JPG`, CV `public/cv/Sebastian-Augustino-Lie-CV.pdf`, `app/favicon.ico`. The OG image (`app/opengraph-image.tsx`) and icon (`app/icon.tsx`) are generated dynamically — eyeball that they render correctly.
+- **Verify (already present, not missing):** profile photo `public/photo.JPG`, CV `public/cv/Sebastian Augustino Lie_CV.pdf`, `app/favicon.ico`. The OG image (`app/opengraph-image.tsx`) and icon (`app/icon.tsx`) are generated dynamically — eyeball that they render correctly.
 
 ## 3. Accounts / services I need to set up
 
