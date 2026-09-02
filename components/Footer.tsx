@@ -1,11 +1,12 @@
 import { Mail } from "lucide-react";
+import { site } from "@/lib/site";
 import { GithubIcon, LinkedinIcon, InstagramIcon } from "@/components/icons";
 
 const socials = [
-  { label: "GitHub", href: "https://github.com/SebastianAugust", Icon: GithubIcon },
-  { label: "LinkedIn", href: "https://linkedin.com/in/placeholder", Icon: LinkedinIcon },
-  { label: "Instagram", href: "https://instagram.com/placeholder", Icon: InstagramIcon },
-  { label: "Email", href: "mailto:placeholder@email.com", Icon: Mail },
+  { label: "GitHub", href: site.github, Icon: GithubIcon },
+  { label: "LinkedIn", href: site.linkedin, Icon: LinkedinIcon },
+  { label: "Instagram", href: site.instagram, Icon: InstagramIcon },
+  { label: "Email", href: `mailto:${site.email}`, Icon: Mail },
 ];
 
 export function Footer() {
@@ -14,7 +15,7 @@ export function Footer() {
       <div className="flex flex-col items-start justify-between gap-4 border-t border-line pt-8 sm:flex-row sm:items-center">
         <div>
           <p className="text-xs font-light text-muted">
-            © 2025 Sebastian Augustino Lie
+            © 2026 Sebastian Augustino Lie
           </p>
           <p className="mt-1 text-[11px] font-light text-muted">
             Built with Next.js

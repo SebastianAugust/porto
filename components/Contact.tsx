@@ -4,6 +4,7 @@ import { useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { ArrowUpRight, Check, Loader2 } from "lucide-react";
 import { fadeUp, stagger, inView, spring } from "@/lib/utils";
+import { site } from "@/lib/site";
 
 interface ContactLink {
   label: string;
@@ -15,19 +16,19 @@ interface ContactLink {
 const links: ContactLink[] = [
   {
     label: "GitHub",
-    value: "SebastianAugust",
-    href: "https://github.com/SebastianAugust",
+    value: site.github.replace(/^https:\/\/github\.com\//, ""),
+    href: site.github,
     external: true,
   },
   {
     label: "Email",
-    value: "sebastianagustinolie@gmail.com",
-    href: "mailto:sebastianagustinolie@gmail.com",
+    value: site.email,
+    href: `mailto:${site.email}`,
   },
   {
     label: "LinkedIn",
     value: "Sebastian Augustino Lie",
-    href: "www.linkedin.com/in/sebastianaugust",
+    href: site.linkedin,
     external: true,
   },
   { label: "Location", value: "Bandung, West Java" },

@@ -6,6 +6,7 @@ import Link from "next/link";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { Mail, Menu, X } from "lucide-react";
 import { cn, spring } from "@/lib/utils";
+import { site } from "@/lib/site";
 import { useActiveSection } from "@/lib/useActiveSection";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { GithubIcon, LinkedinIcon, InstagramIcon } from "@/components/icons";
@@ -21,10 +22,10 @@ const links = [
 const sectionIds = links.map((l) => l.href.slice(1));
 
 const socials = [
-  { label: "GitHub", href: "https://github.com/SebastianAugust", Icon: GithubIcon },
-  { label: "LinkedIn", href: "https://linkedin.com/in/placeholder", Icon: LinkedinIcon },
-  { label: "Instagram", href: "https://instagram.com/placeholder", Icon: InstagramIcon },
-  { label: "Email", href: "mailto:placeholder@email.com", Icon: Mail },
+  { label: "GitHub", href: site.github, Icon: GithubIcon },
+  { label: "LinkedIn", href: site.linkedin, Icon: LinkedinIcon },
+  { label: "Instagram", href: site.instagram, Icon: InstagramIcon },
+  { label: "Email", href: `mailto:${site.email}`, Icon: Mail },
 ];
 
 export function Navbar() {

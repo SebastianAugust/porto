@@ -20,8 +20,6 @@ const poppins = Poppins({
 
 export const metadata: Metadata = {
   // metadataBase resolves all relative URLs (OG/twitter images, canonicals).
-  // TODO: this points at the placeholder domain in lib/site.ts — update it once
-  // the real domain is live.
   metadataBase: new URL(site.url),
   title: {
     // Home page uses `default`; sub-pages flow through `template`
@@ -74,7 +72,7 @@ const personJsonLd = {
   url: site.url,
   jobTitle: "Fullstack Developer",
   description: site.description,
-  sameAs: [site.github, site.linkedin],
+  sameAs: [site.github, site.linkedin, site.instagram],
   alumniOf: {
     "@type": "CollegeOrUniversity",
     name: site.university,

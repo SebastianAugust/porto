@@ -73,12 +73,20 @@ export async function POST(request: Request) {
   const resend = new Resend(apiKey);
 
   try {
+    const escapeHtml = (s: string) =>
+      s.replace(/[&<>"']/g, (c) =>
+        ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]!
+      );
+
     const { error } = await resend.emails.send({
       from,
       to,
       replyTo: cleanEmail,
       subject: `Portfolio message from ${cleanName}`,
       text: `Name: ${cleanName}\nEmail: ${cleanEmail}\n\n${cleanMessage}`,
+      html: `<p><strong>Name:</strong> ${escapeHtml(cleanName)}<br>
+<strong>Email:</strong> <a href="mailto:${escapeHtml(cleanEmail)}">${escapeHtml(cleanEmail)}</a></p>
+<p style="white-space:pre-wrap">${escapeHtml(cleanMessage)}</p>`,
     });
 
     if (error) {

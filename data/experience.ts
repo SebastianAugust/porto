@@ -2,9 +2,9 @@ import type { LucideIcon } from "lucide-react";
 import {
   Users,
   CalendarCheck,
-  Box,
   Heart,
-  HandCoins,
+  Network,
+  Sprout,
   GraduationCap,
   BookOpen,
 } from "lucide-react";
@@ -27,6 +27,28 @@ export interface EducationEntry {
 
 export const organizations: OrganizationEntry[] = [
   {
+    period: "Aug 2026 — Present",
+    role: "Deputy Head of Internal Development Department",
+    org: "KMB Dharmavira",
+    icon: Sprout,
+    bullets: [
+      "Co-leading the Internal Development Department alongside the Department Head, coordinating a team of staff to design and run member development programs, internal evaluation systems, and community-building activities",
+      "Overseeing execution of training, mentoring, and bonding initiatives to strengthen member engagement and organizational cohesion throughout the term",
+      "Supporting internal evaluation processes to track member growth and inform department strategy alongside leadership",
+    ],
+  },
+  {
+    period: "May 2026 — Present",
+    role: "Head of Executor",
+    org: "Character Building Season",
+    icon: Network,
+    bullets: [
+      "Leading a cross-functional team of 44 staff across 4 divisions to execute direct participant-facing operations throughout the program",
+      "Orchestrating real-time coordination between divisions to translate event concepts and plans into on-ground execution, ensuring consistent participant experience and safety",
+      "Sustaining seamless synchronization across all four divisions to ensure planned activities are executed on schedule and aligned with program objectives",
+    ],
+  },
+  {
     period: "Feb 2026 — Present",
     role: "Head of Human Resources",
     org: "Himatif FMIPA Unpad",
@@ -45,18 +67,7 @@ export const organizations: OrganizationEntry[] = [
     bullets: [
       "Led and coordinated the execution of the event program",
       "Managed team coordination and event planning activities",
-      "Oversaw communication between divisions during preparation and implementation",
-    ],
-  },
-  {
-    period: "Aug 2025 — Sept 2025",
-    role: "Head of Transportation and Logistics",
-    org: "Open House KMB Dharmavira",
-    icon: Box,
-    bullets: [
-      "Coordinated transportation and logistics operations for the event",
-      "Managed equipment distribution and venue preparation",
-      "Ensured operational activities ran effectively during the event",
+      "Oversaw communication between divisions during event preparation and implementation",
     ],
   },
   {
@@ -68,28 +79,6 @@ export const organizations: OrganizationEntry[] = [
       "Led and coordinated the medical division during the event",
       "Managed team responsibilities and medical preparation",
       "Ensured participant health support and event safety procedures",
-    ],
-  },
-  {
-    period: "May 2025 — Oct 2025",
-    role: "Staff of Fundraising",
-    org: "IFEST UNPAD",
-    icon: HandCoins,
-    bullets: [
-      "Assisted fundraising activities during the event",
-      "Managed product sales and customer interactions at the venue",
-      "Helped achieve funding targets through team collaboration",
-    ],
-  },
-  {
-    period: "Jan 2025 — Dec 2025",
-    role: "Staff of Human Resources",
-    org: "Himatif FMIPA Unpad",
-    icon: Users,
-    bullets: [
-      "Assisted organizational human resource management and internal coordination",
-      "Supported organizational development programs and member engagement activities",
-      "Collaborated with teams to maintain effective communication and workflow",
     ],
   },
 ];
