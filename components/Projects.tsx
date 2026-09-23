@@ -77,7 +77,7 @@ export function Projects() {
   const reduceMotion = useReducedMotion();
 
   return (
-    <section id="projects" className="mx-auto max-w-6xl px-6 py-20 sm:px-8 sm:py-28">
+    <section id="projects" className="snap-long mx-auto max-w-6xl px-6 pb-20 sm:px-8 sm:pb-28">
       <SectionHeading title="Projects" subtitle="Things I've shipped" />
 
       <motion.div

@@ -32,7 +32,31 @@
 
   /* star tone */
   --star: #ffffff;
+  --star-dim: 1; /* multiplier on every star's own opacity */
+  --star-glow: rgba(110, 168, 255, 0.4); /* halo on the five beacon stars */
   --meteor-opacity: 1;
+  --meteor-core: #ffffff; /* bright head */
+  --meteor-tail: rgba(186, 214, 255, 0.95); /* light-blue streak, matches --star glow */
+  --meteor-halo: rgba(150, 195, 255, 0.55); /* soft glow around the head */
+  /* Tight bright core + wide soft halo, so the head reads as luminous. */
+  --shadow-meteor: 0 0 12px 2px rgba(255, 255, 255, 0.6),
+    0 0 26px 8px var(--meteor-halo);
+
+  /* Altitude zones (night sky only — star-sky fades out in light mode) */
+  --wisp: rgba(170, 190, 235, 0.09); /* upper-atmosphere cloud wisps */
+  --bird: #cdd7f0; /* bird silhouettes — solid fill, so body and wings never double up */
+  --bird-alt: #cdd7f0; /* second tone, alternating per bird (same at night) */
+  --bird-opacity: 0.5; /* applied per whole bird, scaled by its own 0.6–1 */
+  --city-light: #ffc978; /* warm distant windows */
+  --city-light-alt: #ffc978; /* every other window (same at night) */
+  --city-light-glow: rgba(255, 180, 90, 0.45);
+  /* skyline silhouette, top → bottom of the buildings; a shade under --bg */
+  --horizon-fill-top: #04060f;
+  --horizon-fill-mid: #04060f;
+  --horizon-fill-bottom: #04060f;
+  --horizon-rim: rgba(110, 168, 255, 0.14);
+  --horizon-glow: rgba(232, 150, 72, 0.3); /* amber core at ground level */
+  --horizon-glow-soft: rgba(196, 92, 60, 0.12); /* orange falloff */
 
   /* Per-theme surfaces / depth — dark keeps glow, light (below) uses soft shadow.
      Centralized here so components reference one var and never hardcode a theme. */
@@ -45,51 +69,95 @@
     0 0 60px -12px rgba(110, 168, 255, 0.5);
   --shadow-panel: 0 0 50px -22px rgba(110, 168, 255, 0.7);
   --cover-grad: linear-gradient(to bottom right, #101830, #0a0f20);
+  --header-bg: color-mix(in srgb, var(--bg) 70%, transparent); /* scrolled navbar */
 }
 
 /* ---------------------------------------------------------------------------
-   Dawn — the daytime counterpart to the starry night. A warm, layered early-
-   morning sky: off-white canvas (never pure white), a soft rising sun, slow
-   clouds, and faint blue accent dots that quietly echo the night's stars.
-   Depth here comes from soft COLORED shadows, not glow.
+   Blue Hour — the light theme is the SAME night scene a moment before sunrise,
+   not a different concept: the stars thinning out up top, a pale moon low in
+   the sky, city lights still on, skyline and birds in dusk blue, and the sky
+   running from lavender overhead down to cream at the horizon.
+
+   Contrast (computed, not eyeballed): no stop is darker than #b3aed4, so
+   every text colour — navbar included — holds on the whole sky: --text
+   ≥6.5:1, --muted and --accent ≥5.2:1. No dark band up top: the navbar uses
+   the same dark-on-light tokens as the page.
 --------------------------------------------------------------------------- */
 :root:not(.dark) {
-  --bg: #faf8f4; /* warm off-white base, never #ffffff */
-  --surface-1: rgba(35, 35, 43, 0.02);
-  --line: rgba(42, 42, 51, 0.1);
-  --line-strong: rgba(42, 42, 51, 0.16);
-  --text: #23232b;
-  --muted: rgba(42, 42, 51, 0.72); /* ≥4.5:1 on Dawn bg (spec 0.6 fails AA) */
-  --accent: #3566c9; /* deeper than dark #6ea8ff for AA on light bg */
+  --bg: #fdf1e6; /* cream horizon; the gradient itself lives on .dawn-sky */
+  --dawn-gradient: linear-gradient(
+    180deg,
+    #b3aed4 0,
+    #e3c3d6 45%,
+    #f6dfd4 70%,
+    #fdf1e6 100%
+  );
+  --surface-1: rgba(44, 36, 64, 0.03);
+  --line: rgba(44, 36, 64, 0.12);
+  --line-strong: rgba(44, 36, 64, 0.2);
+  --text: #2c2440; /* deep violet, never white on the light sky */
+  --muted: #3d3354; /* solid, not alpha, so it holds 4.5:1 on the lavender band */
+  --accent: #2e2a86; /* indigo — #3566c9 only reached ~3:1 on lavender */
   --cta: #2563eb;
   --signal: #2bbd83; /* vivid green — the Live / Available dot */
-  --signal-text: #0c6f47; /* darker green for "Live" label text (5.66:1 AA) */
-  --amber: #8a5512; /* In Dev badge — deepened for AA (5.65:1) on warm bg */
-  --grey: rgba(42, 42, 51, 0.72); /* Deployed / Demo badge (≥4.5:1) */
+  --signal-text: #0c6f47; /* darker green for "Live" label text (on cards) */
+  --amber: #8a5512; /* In Dev badge — deepened for AA on light cards */
+  --grey: #3d3354; /* Deployed / Demo badge */
 
-  /* Dawn radial glows (consumed by body::before) */
-  --nebula-blue: rgba(231, 236, 251, 1); /* pale blue, bottom-left */
-  --nebula-violet: rgba(255, 233, 214, 1); /* peach, top-right */
+  /* No nebula wash in the morning sky. */
+  --nebula-blue: transparent;
+  --nebula-violet: transparent;
 
-  --star: #5b6172; /* unused in light (star-sky fades out) */
-  --meteor-opacity: 0;
+  /* The last stars and meteors, fading out. */
+  --star: #fdfaf3;
+  --star-dim: 0.75; /* 0.18–0.7 at night → ~0.15–0.55 */
+  --star-glow: transparent;
+  --meteor-opacity: 0.6;
+  --meteor-core: #fdfaf3;
+  --meteor-tail: rgba(253, 250, 243, 0.55);
+  --meteor-halo: rgba(253, 250, 243, 0.25);
+  --shadow-meteor: 0 0 8px 1px rgba(253, 250, 243, 0.4), 0 0 16px 4px var(--meteor-halo);
 
-  /* Dawn surfaces — frosted glass + soft blue-tinted shadows */
-  --card-bg: rgba(255, 255, 255, 0.75);
-  --card-border: rgba(255, 255, 255, 0.9);
-  --shadow-card: 0 12px 30px -14px rgba(80, 100, 160, 0.3);
-  --shadow-card-featured: 0 16px 40px -16px rgba(80, 100, 160, 0.4);
+  /* Pale moon, low in the sky. */
+  --moon: #fdfaf3;
+  --moon-glow: rgba(253, 250, 243, 0.5);
+
+  /* Altitude zones, re-skinned for dawn — lights stay ON. */
+  --wisp: rgba(255, 255, 255, 0.3);
+  --bird: #2b2f4a;
+  --bird-alt: #332f4d;
+  --bird-opacity: 0.85;
+  --city-light: #ffd98f;
+  --city-light-alt: #ffcf7f;
+  --city-light-glow: rgba(255, 207, 127, 0.55);
+  --horizon-fill-top: #3a3f5c;
+  --horizon-fill-mid: #33374f;
+  --horizon-fill-bottom: #2d3049;
+  --horizon-rim: rgba(253, 249, 242, 0.18);
+  --horizon-glow: rgba(255, 196, 140, 0.35);
+  --horizon-glow-soft: rgba(240, 150, 130, 0.14);
+
+  /* Surfaces — frosted cream glass + soft violet shadows */
+  --card-bg: rgba(253, 249, 242, 0.72);
+  --card-border: rgba(253, 249, 242, 0.9);
+  --shadow-card: 0 12px 30px -14px rgba(60, 50, 110, 0.3);
+  --shadow-card-featured: 0 16px 40px -16px rgba(60, 50, 110, 0.4);
   --shadow-cta: 0 8px 20px -6px rgba(37, 99, 235, 0.5);
-  --shadow-photo: 0 20px 50px -12px rgba(110, 140, 220, 0.4);
-  --shadow-panel: 0 14px 36px -18px rgba(80, 100, 160, 0.35);
-  --cover-grad: linear-gradient(to bottom right, #eef1fb, #fbf3ec);
+  --shadow-photo: 0 20px 50px -12px rgba(70, 60, 130, 0.4);
+  --shadow-panel: 0 14px 36px -18px rgba(60, 50, 110, 0.35);
+  --cover-grad: linear-gradient(to bottom right, #e7e4f3, #fbe9e1);
+}
 
-  /* Dawn scenery (consumed by Starfield's dawn-sky) */
-  --sun-core: #fff6e8;
-  --sun-edge: #ffd9a8;
-  --sun-halo: rgba(255, 206, 150, 0.45);
-  --cloud: #ffffff;
-  --dot: #6ea8ff; /* star callback — faint static blue dots */
+/* No visible bar in Blue Hour: the header paints the very slice of the sky
+   that sits behind it (the sky is fixed to the viewport, and so is the
+   header), so it is pixel-for-pixel the same colour — no fill, no border —
+   yet still hides content scrolling under it. The open mobile menu keeps the
+   usual cream glass (--header-bg), so its links stay on a steady surface. */
+:root:not(.dark) .site-header:not([data-open]) {
+  background: var(--dawn-gradient) top / 100% 100vh no-repeat;
+  border-color: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
 }
 
 @theme inline {
@@ -111,6 +179,48 @@
 @layer base {
   html {
     scroll-behavior: smooth;
+  }
+
+  /* Section snap — home page only (page.tsx marks <main class="snap-page">).
+     With a mouse or trackpad the snapping is done ENTIRELY by SectionSnap
+     (wheel → next/previous section, free scroll inside long sections). CSS
+     `mandatory` snap used to sit under it and fought it: every small, slow
+     trackpad scroll inside Projects/Experience was pulled back to the
+     section top, so the page felt stuck.
+     Touch has no wheel, so there the browser snaps — `proximity` only, which
+     settles when a swipe ends close to a section and never drags you back.
+     It must sit on <html>, the real scroll container. Snap is a first-pass
+     guide only: once the reader reaches the bottom, SectionSnap puts
+     `snap-done` on <html> and scrolling is free until reload. */
+  @media (max-width: 640px), (pointer: coarse) {
+    html:has(.snap-page):not(.snap-done) {
+      scroll-snap-type: y proximity;
+    }
+  }
+
+  /* Short section — one slide. Fills exactly the space under the navbar (the
+     5rem scroll-margin below), and `snap-stop: always` stops a flick skipping it.
+     Content sits at the top so the heading lands right under the navbar; the
+     spare height falls below it, over the sky. */
+  .snap-short {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    min-block-size: calc(100svh - 5rem);
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+  }
+  /* Long section (Projects, Experience) — natural height, snaps at its top
+     edge only, then scrolls normally through its content. */
+  .snap-long {
+    scroll-snap-align: start;
+  }
+  /* One top padding for every snapped section (bottom padding stays on each
+     section). Snap already parks the section top 5rem down, just under the
+     navbar, so this only needs to be a short breath before the heading. */
+  .snap-short,
+  .snap-long {
+    padding-block-start: 2rem;
   }
 
   /* Keep section headings clear of the 4rem sticky navbar when anchor-scrolled. */
@@ -142,19 +252,12 @@
       radial-gradient(60rem 45rem at 85% -5%, var(--nebula-blue), transparent 60%),
       radial-gradient(55rem 45rem at 8% 105%, var(--nebula-violet), transparent 60%);
     transition: background 0.4s ease;
-  }
-
-  /* Dawn background — warm off-white base gradient + two soft radial glows.
-     Light only; dark keeps its solid night bg + nebula above. */
-  :root:not(.dark) body {
-    background-image: linear-gradient(180deg, #fbf3ec 0%, #faf8f4 60%);
-    background-attachment: fixed;
-  }
-
-  :root:not(.dark) body::before {
-    background:
-      radial-gradient(ellipse 90% 60% at 75% 0%, var(--nebula-violet), transparent 55%),
-      radial-gradient(ellipse 70% 50% at 15% 5%, var(--nebula-blue), transparent 50%);
+    /* Far depth layer of the altitude shift. Starfield writes these two custom
+       properties on :root from the scroll position; the defaults keep it
+       perfectly still when it doesn't (reduced motion, or before hydration).
+       It scales UP, so the shift can never uncover an edge. */
+    transform: translate3d(0, var(--sky-far-y, 0px), 0) scale(var(--sky-far-scale, 1));
+    will-change: transform;
   }
 
   ::selection {
@@ -222,25 +325,67 @@
 }
 
 /* ---------------------------------------------------------------------------
-   Meteor — fade in, shoot diagonally (~38°) down-left ~335px, fade out. The head
-   leads bottom-left; the ::after tail trails BEHIND it toward the top-right, like
-   a real comet. The 142° rotation makes the tail exactly anti-parallel to travel
-   (atan(207/265) ≈ 38° below horizontal → tail points 38° above horizontal, up-
-   right). The tail gradient itself lives on the element in JSX.
+   Meteor — a 3px glowing head with a long tapered tail, shooting down-left.
+
+   Geometry: the transform is `rotate() translate3d(x,0,0)`, in that order, so
+   the meteor always travels along its OWN local +x axis. The ::after tail hangs
+   off local -x (`right: 100%`), which is therefore always exactly anti-parallel
+   to travel — the tail trails behind for any angle, by construction, with no
+   second number to keep in sync.
+
+   Timing: only the first 13% of the cycle is the streak; the remaining 87% parks
+   it invisible at the end point. That dead time is what lets six meteors share
+   the sky without it turning into a meteor shower — at a 30s cycle the streak
+   lasts ~3.7s, comfortably shorter than the smallest gap between two meteors'
+   phases, so you never get three at once. Angle/distance/tail length come in
+   per meteor as custom properties.
 --------------------------------------------------------------------------- */
+.meteor {
+  position: absolute;
+  inline-size: 3px;
+  block-size: 3px;
+  border-radius: 9999px;
+  background: var(--meteor-core);
+  opacity: 0;
+  box-shadow: var(--shadow-meteor);
+  will-change: transform, opacity;
+  animation-name: meteor;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+.meteor::after {
+  content: "";
+  position: absolute;
+  right: 100%; /* behind the head, opposite the direction of travel */
+  top: 50%;
+  translate: 0 -50%;
+  inline-size: var(--meteor-tail-length);
+  block-size: 2px;
+  border-radius: 9999px;
+  /* Transparent at the far end → light blue → white where it meets the head. */
+  background: linear-gradient(
+    to right,
+    transparent 0%,
+    var(--meteor-tail) 70%,
+    var(--meteor-core) 100%
+  );
+}
+
 @keyframes meteor {
   0% {
-    transform: translate3d(0, 0, 0) rotate(142deg);
+    transform: rotate(var(--meteor-angle)) translate3d(0, 0, 0);
     opacity: 0;
   }
-  8% {
+  1.5% {
     opacity: var(--meteor-opacity);
   }
-  70% {
+  9.5% {
     opacity: var(--meteor-opacity);
   }
+  13%,
   100% {
-    transform: translate3d(-265px, 207px, 0) rotate(142deg);
+    transform: rotate(var(--meteor-angle)) translate3d(var(--meteor-distance), 0, 0);
     opacity: 0;
   }
 }
@@ -323,41 +468,66 @@
    morning, never a hard flip. Driven purely by the `.dark` class next-themes sets
    before paint, so there's no hydration flash and no JS needed for visibility.
 --------------------------------------------------------------------------- */
+/* ---------------------------------------------------------------------------
+   Altitude shift — depth layers.
+
+   Each layer is a flat plane inside the fixed sky that the Starfield translates
+   at its own rate as Hero scrolls into Skills, so the sky reads as a camera
+   descending through it rather than one background sliding. Purely 2D: only
+   transform, never a real 3D scene.
+
+   The 25% of extra height below the viewport is the slack the shift eats into.
+   Every layer moves UP, so the overhang goes at the bottom, and no shift can
+   ever drag an empty edge into view. Star positions are percentages, so they
+   spread across the taller plane on their own and the overhang is populated.
+--------------------------------------------------------------------------- */
+.sky-layer {
+  position: absolute;
+  inset: 0 0 -25% 0;
+  will-change: transform;
+}
+
 .star-sky,
 .dawn-sky {
   position: absolute;
   inset: 0;
-  transition: opacity 0.5s ease;
 }
-.star-sky {
-  opacity: 1;
-}
+/* The Blue Hour base sits UNDER the shared sky and only exists in light mode.
+   It's a fixed layer (not a body background) so the gradient stays pinned to
+   the viewport everywhere, including iOS, which ignores background-attachment. */
 .dawn-sky {
+  background: var(--dawn-gradient);
   opacity: 0;
-}
-:root:not(.dark) .star-sky {
-  opacity: 0;
+  transition: opacity 0.5s ease;
 }
 :root:not(.dark) .dawn-sky {
   opacity: 1;
 }
 
-/* The sun rises on dark→light (fade + upward drift) and sets on the reverse. */
-.dawn-sun {
+/* Blue Hour thins the sky out: only the `.dawn-star` handful stays, and the
+   extra upper-atmosphere stars of the Skills zone sit out. */
+:root:not(.dark) .star:not(.dawn-star),
+:root:not(.dark) .zone-stars {
+  display: none;
+}
+
+/* Pale moon, low in the sky, with a soft glow. Rises on dark→light. */
+.dawn-moon {
+  position: absolute;
+  top: 34%;
+  right: 5%; /* clear of the Hero portrait ring, which ends ~16% from the right */
+  inline-size: 46px;
+  block-size: 46px;
+  border-radius: 9999px;
+  background: radial-gradient(circle at 40% 38%, var(--moon), var(--moon) 55%, transparent 72%);
+  box-shadow: 0 0 44px 14px var(--moon-glow);
   opacity: 0;
   transform: translateY(16px);
   transition: opacity 0.6s ease, transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
 }
-:root:not(.dark) .dawn-sun {
+:root:not(.dark) .dawn-moon {
   opacity: 1;
   transform: translateY(0);
-}
-
-/* Thin, soft clouds — blurred rounded bars. Drift distance/duration set inline. */
-.dawn-cloud {
-  border-radius: 9999px;
-  background: var(--cloud);
-  filter: blur(14px);
 }
 
 @keyframes cloud-drift-r {
@@ -377,6 +547,117 @@
   }
   50% {
     transform: translateX(-34px);
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Altitude zones — one decorative layer per "height" of the page, cross-faded
+   as the scroll-spy (Starfield → useActiveSection) moves `data-zone` from Hero
+   down to Contact. All layers live in the FIXED sky, so on the tall Projects /
+   Experience sections the birds and lights stay put while content scrolls.
+   Cumulative on the way down: lights appear at Experience and stay through
+   Contact; the skyline arrives at Achievements; the warm glow only at Contact.
+--------------------------------------------------------------------------- */
+.zone-layer {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.5s ease-out;
+}
+[data-zone="skills"] .zone-stars,
+[data-zone="projects"] .zone-clouds,
+[data-zone="projects"] .zone-birds,
+[data-zone="experience"] .zone-lights,
+[data-zone="achievements"] .zone-lights,
+[data-zone="achievements"] .zone-lights-dense,
+[data-zone="contact"] .zone-lights,
+[data-zone="contact"] .zone-lights-dense,
+[data-zone="contact"] .zone-horizon,
+[data-zone="contact"] .zone-glow {
+  opacity: 1;
+}
+[data-zone="skills"] .zone-clouds {
+  opacity: 0.55; /* thin in the upper atmosphere, thicker at Projects */
+}
+[data-zone="achievements"] .zone-horizon {
+  opacity: 0.6; /* skyline first shows faintly, full at ground level */
+}
+
+.night-wisp {
+  position: absolute;
+  border-radius: 9999px;
+  background: var(--wisp);
+  filter: blur(18px);
+}
+
+.city-light {
+  position: absolute;
+  border-radius: 9999px;
+  background: var(--city-light);
+  box-shadow: 0 0 8px 2px var(--city-light-glow);
+}
+.city-light:nth-child(even) {
+  background: var(--city-light-alt);
+}
+
+.horizon-glow {
+  position: absolute;
+  inset: auto 0 0 0;
+  block-size: 45vh;
+  background: radial-gradient(
+    ellipse 75% 100% at 50% 100%,
+    var(--horizon-glow),
+    var(--horizon-glow-soft) 45%,
+    transparent 75%
+  );
+}
+
+/* Wing beat. Each wing pivots at its root next to the body: the left wing on
+   its right edge, the right wing on its left edge. Mirrored keyframes, one
+   shared duration/delay per bird (set inline). The beat is lopsided on
+   purpose: a quick, firm downstroke over the first 35% of the cycle, then a
+   slow recovery upstroke, which is what makes it read as flight rather than
+   a metronome. */
+.bird-wing-l,
+.bird-wing-r {
+  transform-box: fill-box;
+}
+.bird-wing-l {
+  transform-origin: 100% 70%;
+}
+.bird-wing-r {
+  transform-origin: 0% 70%;
+}
+@keyframes wing-l {
+  0%,
+  100% {
+    transform: rotate(26deg);
+    animation-timing-function: cubic-bezier(0.55, 0, 0.8, 0.3); /* power stroke */
+  }
+  35% {
+    transform: rotate(-24deg);
+    animation-timing-function: cubic-bezier(0.3, 0, 0.35, 1); /* slow recovery */
+  }
+}
+@keyframes wing-r {
+  0%,
+  100% {
+    transform: rotate(-26deg);
+    animation-timing-function: cubic-bezier(0.55, 0, 0.8, 0.3);
+  }
+  35% {
+    transform: rotate(24deg);
+    animation-timing-function: cubic-bezier(0.3, 0, 0.35, 1);
+  }
+}
+
+@keyframes bird-cross {
+  from {
+    /* minus its own width, so even a wide flock starts fully off-screen */
+    transform: translateX(calc(-60vw - 100%));
+  }
+  to {
+    transform: translateX(80vw);
   }
 }
 

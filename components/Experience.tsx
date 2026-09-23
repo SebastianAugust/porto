@@ -73,7 +73,7 @@ export function Experience() {
   return (
     <section
       id="experience"
-      className="mx-auto max-w-3xl px-6 py-20 sm:px-8 sm:py-28"
+      className="snap-long mx-auto max-w-3xl px-6 pb-20 sm:px-8 sm:pb-28"
     >
       <SectionHeading title="Experience" subtitle="Where I've contributed" />
 

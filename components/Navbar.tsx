@@ -59,13 +59,15 @@ export function Navbar() {
 
   return (
     <motion.header
+      data-open={open || undefined}
       initial={reduceMotion ? false : { opacity: 0, y: -8 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ ...spring, delay: 0.05 }}
       className={cn(
-        "fixed inset-x-0 top-0 z-40 border-b transition-colors duration-300",
+        // `site-header` blends it into the Blue Hour sky (globals.css).
+        "site-header fixed inset-x-0 top-0 z-40 border-b transition-colors duration-300",
         scrolled || open
-          ? "border-line bg-bg/70 backdrop-blur-md"
+          ? "border-line bg-[var(--header-bg)] backdrop-blur-md"
           : "border-transparent bg-transparent"
       )}
     >

@@ -9,7 +9,10 @@ export function Skills() {
   const reduceMotion = useReducedMotion();
 
   return (
-    <section id="skills" className="mx-auto max-w-6xl px-6 py-20 sm:px-8 sm:py-28">
+    <section
+      id="skills"
+      className="snap-short mx-auto max-w-6xl px-6 pb-20 sm:px-8 sm:pb-28"
+    >
       <SectionHeading title="Skills" subtitle="Tools I build with" />
 
       <motion.ul

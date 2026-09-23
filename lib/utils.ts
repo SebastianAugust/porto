@@ -39,13 +39,39 @@ export const inView = {
 } as const;
 
 /**
- * Meteor timings — staggered so they never fire simultaneously. Positions are
- * the launch points (top/right %), kept up high so each has room to fall.
+ * Meteor cycle length, in seconds. Every meteor shares it — that is the whole
+ * trick. Six independent durations drift against each other and eventually
+ * clump (measured: four on screen at once, three-or-more 15% of the time), so
+ * instead they run on ONE period at fixed phases. Concurrency then can't drift:
+ * it's whatever the phase gaps say it is, forever.
+ */
+export const METEOR_CYCLE = 30;
+export const METEOR_CYCLE_MOBILE = 18;
+
+/**
+ * Meteor flight plans — launch point, where it sits in the shared cycle, and
+ * how it flies.
+ *
+ * `phase` is a 0–1 position in the cycle, not a delay in seconds, so the same
+ * list re-spreads itself across the shorter mobile cycle. The gaps are
+ * deliberately uneven (5.5s, 5.7s, 3.8s, 6.5s, 3.9s, 4.6s) so the sky doesn't
+ * tick like a metronome, but no two are close enough to put three meteors up
+ * together — the streak only lasts ~3.7s of the 30s cycle.
+ *
+ * `mobilePhase: null` means that meteor sits out on small screens; the four
+ * that remain are re-spread across the whole cycle rather than sliced off the
+ * front, which would leave one long dead stretch of sky. Four, not three,
+ * because how often a meteor is up is (count x streak fraction) and nothing
+ * else — shortening the mobile cycle speeds them up but doesn't make them any
+ * more frequent. Three left the phone emptier than the old subtle version was.
  */
 export const meteorConfigs = [
-  { top: "-2%", left: "62%", delay: 1, duration: 5 },
-  { top: "8%", left: "88%", delay: 3.2, duration: 4.6 },
-  { top: "-6%", left: "40%", delay: 6, duration: 5.6 },
+  { top: "-4%", left: "58%", phase: 0, mobilePhase: 0.02, angle: 142, distance: 520, tail: 170 },
+  { top: "6%", left: "86%", phase: 0.183, mobilePhase: null, angle: 138, distance: 600, tail: 210 },
+  { top: "-8%", left: "38%", phase: 0.373, mobilePhase: 0.29, angle: 146, distance: 470, tail: 155 },
+  { top: "12%", left: "72%", phase: 0.5, mobilePhase: null, angle: 140, distance: 560, tail: 195 },
+  { top: "-3%", left: "96%", phase: 0.717, mobilePhase: 0.51, angle: 144, distance: 640, tail: 220 },
+  { top: "20%", left: "48%", phase: 0.847, mobilePhase: 0.76, angle: 137, distance: 500, tail: 180 },
 ] as const;
 
 /**
@@ -109,26 +135,4 @@ export function makeStars(count: number, seed = 1337): Star[] {
     });
 
   return stars;
-}
-
-export interface Dot {
-  x: number; // %
-  y: number; // %
-  size: number; // px
-  opacity: number;
-}
-
-/**
- * Dawn accent dots — a quiet daytime callback to the night's stars. Faint, static
- * light-blue specks scattered across the upper sky. Generated from a fixed seed so
- * SSR and client serialize identically (no hydration mismatch). They never move.
- */
-export function makeDots(count: number, seed = 7): Dot[] {
-  const rand = mulberry32(seed);
-  return Array.from({ length: count }, () => ({
-    x: r(rand() * 100),
-    y: r(rand() * 48), // upper ~half of the viewport only
-    size: r(1.2 + rand() * 1.8, 2), // 1.2 – 3px
-    opacity: r(0.15 + rand() * 0.25, 2), // 0.15 – 0.4
-  }));
 }

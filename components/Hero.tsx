@@ -21,7 +21,9 @@ export function Hero() {
   return (
     <section
       id="home"
-      className="relative mx-auto max-w-6xl px-6 pb-16 pt-32 sm:px-8 sm:pt-40 lg:pb-24"
+      /* Short snap slide (see globals.css → .snap-short). Hero sits at scroll 0,
+         so it fills the full viewport rather than the area under the navbar. */
+      className="relative mx-auto flex min-h-screen max-w-6xl snap-start snap-always flex-col justify-center px-6 pb-16 pt-32 sm:px-8 sm:pt-40 lg:pb-24"
     >
       <div className="grid items-center gap-12 lg:grid-cols-[1.15fr_0.85fr] lg:gap-8">
         {/* Left — the pitch. (Stacks below the portrait on mobile/tablet.) */}

@@ -97,7 +97,7 @@ export function Contact() {
   return (
     <section
       id="contact"
-      className="mx-auto max-w-3xl px-6 py-20 sm:px-8 sm:py-28"
+      className="snap-short mx-auto max-w-3xl px-6 pb-20 sm:px-8 sm:pb-28"
     >
       <motion.h2
         variants={reduceMotion ? undefined : fadeUp}

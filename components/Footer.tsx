@@ -11,7 +11,7 @@ const socials = [
 
 export function Footer() {
   return (
-    <footer className="mx-auto max-w-6xl px-6 py-10 sm:px-8">
+    <footer className="snap-end mx-auto max-w-6xl px-6 py-10 sm:px-8">
       <div className="flex flex-col items-start justify-between gap-4 border-t border-line pt-8 sm:flex-row sm:items-center">
         <div>
           <p className="text-xs font-light text-muted">
